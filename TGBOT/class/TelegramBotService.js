@@ -8,6 +8,7 @@ class TelegramBotService {
     this.buyDomainsBot = buyDomainsBot;
     this.apiService = apiService;
   }
+
   async getUpdates() {
     if (this.isFetchingUpdates) {
       // If a request is already in progress, skip this iteration
@@ -26,10 +27,7 @@ class TelegramBotService {
       }
       // Update the offset
       if (updates.length > 0) {
-        const maxUpdateId = Math.max(
-          ...updates.map((update) => update.update_id)
-        );
-        this.offset = maxUpdateId;
+        this.updateOffset(updates);
       }
     } catch (error) {
       console.error("Error getting updates:", error);
@@ -37,7 +35,11 @@ class TelegramBotService {
       this.isFetchingUpdates = false; // Reset the flag after the request is complete
     }
   }
-
- 
+  // Функция для обновления апдейта, чтобы не флудились сообщения
+  updateOffset(updates) {
+    const maxUpdateId = Math.max(...updates.map((update) => update.update_id));
+    // Обновляем смещение
+    this.offset = maxUpdateId;
+  }
 }
 module.exports = TelegramBotService;
