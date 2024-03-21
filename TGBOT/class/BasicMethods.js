@@ -4,7 +4,7 @@ class BasicMethods {
     this.commandHandlers = {};
     this.callbackHandlers = {};
   }
-
+// Используется вместе с функционалом inline кнопки, там callback_query приходит
   action(text, handler) {
     this.callbackHandlers[text] = this.wrapperHandler(handler);
   }
@@ -26,23 +26,24 @@ class BasicMethods {
   // END BUTTON LOGICS
 
   // TELEGRAM methods
-  // setMyCommands
+  // setMyCommands - для создания списка команд по типу /start,/help и т.д
   async setMyCommands(commands = [{ command, description }]) {
     const commandsArray = {
       commands,
     };
     await this.apiService.post("setMyCommands", commandsArray);
   }
-  // sendMessage
+  // sendMessage - базовый метод в телеграме
   async sendMessage(chat_id, text, params = {}) {
-    console.log(params);
+    // console.log(params);
     try {
       const response = await this.apiService.post("sendMessage", {
         chat_id,
         text,
         ...params,
       });
-      console.log("Message sent:", response.data.result);
+      // console.log(response);
+      // console.log("Message sent:", response.data.result);
     } catch (error) {
       console.error("Error sending message:", error.message);
     }

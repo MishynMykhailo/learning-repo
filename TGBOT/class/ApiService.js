@@ -7,7 +7,6 @@ class ApiService {
   }
 
   // Made request with axios on get/post method
-
   async get(method, params = {}) {
     return await axios.get(`${this.apiUrl}${method}`, { params });
   }

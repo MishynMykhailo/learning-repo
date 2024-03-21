@@ -3,7 +3,7 @@ class KeyboardService {
     this.apiService = apiService;
   }
   // BUTTONS LOGICS
-
+// Inline кнопки которые в телеграме в сообщениях
   inlineKeyboard(buttons = [{ text, callback_data, url }]) {
     const replyMarkup = {
       inline_keyboard: [[...buttons]],

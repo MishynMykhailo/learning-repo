@@ -1,5 +1,3 @@
-const axios = require("axios");
-const ApiService = require("./ApiService");
 require("dotenv").config();
 class TelegramBotService {
   constructor({ apiService, buyDomainsBot }) {
@@ -8,7 +6,7 @@ class TelegramBotService {
     this.buyDomainsBot = buyDomainsBot;
     this.apiService = apiService;
   }
-
+// Просто метод для получения текущего обновления от телеграма
   async getUpdates() {
     if (this.isFetchingUpdates) {
       // If a request is already in progress, skip this iteration
