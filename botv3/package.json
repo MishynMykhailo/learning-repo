@@ -1,0 +1,17 @@
+{
+  "name": "botv3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "botRefa.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx nodemon botRefa.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.0"
+  }
+}
