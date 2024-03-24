@@ -42,9 +42,9 @@ class BasicMethods {
         text,
         ...params,
       });
-      console.log("Message sent:", response.data.result);
+      // console.log("Message sent:", response.data.result);
     } catch (error) {
-      console.error("Error sending message:", error.message);
+      console.error("Error sending message:", error);
     }
   }
 }

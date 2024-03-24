@@ -1,8 +1,8 @@
-const axios = require("axios"); // Добавлен импорт axios
 const TelegramBotService = require("./TelegramBotService");
 const ApiService = require("./ApiService");
 const KeyboardService = require("./KeyboardService");
 const BasicMethods = require("./BasicMethods");
+const StateRegistration = require("./StateRegistration");
 require("dotenv").config();
 
 class Bot {
@@ -20,7 +20,7 @@ class Bot {
     });
     this.keyboardService = new KeyboardService(this.apiService);
     //  Место для хранения коллбеков
-    this.stateMap = new Map();
+    this.registration = new StateRegistration({ bot: this });
   }
 
   async handleUpdate(updates) {
@@ -52,43 +52,11 @@ class Bot {
           // Message я передаю как раз все сообщение, чтобы мог его использовать в методе как context
           await this.basicMethods.callbackHandlers[text](message);
         }
-        const chatId = message.chat.id;
-        const userId = message.from.id;
-        const currentState = this.stateMap.get(userId);
-
-        switch (currentState) {
-          case "waiting_first_name":
-            const firstName = message.text;
-            this.stateMap.set(userId, "waiting_last_name");
-            await this.basicMethods.sendMessage(
-              chatId,
-              "Введите вашу фамилию:"
-            );
-            break;
-          case "waiting_last_name":
-            const lastName = message.text;
-            this.stateMap.set(userId, "waiting_phone");
-            await this.basicMethods.sendMessage(
-              chatId,
-              "Введите ваш номер телефона:"
-            );
-            break;
-          case "waiting_phone":
-            const phone = message.text;
-            const userData = {
-              firstName: firstName,
-              lastName: lastName,
-              phone: phone,
-            };
-            console.log("Новый пользователь:", userData);
-            this.stateMap.delete(userId);
-            await this.basicMethods.sendMessage(
-              chatId,
-              "Спасибо! Ваша регистрация завершена."
-            );
-            break;
-          default:
-            break;
+        const currentState = this.registration.getIdState(message.chat.id);
+        if (currentState) {
+          // Если текущее состояние - "registration", то вызываем метод nextStep
+          this.registration.nextStep(message.chat.id, text);
+          // Здесь вы можете отправить нужные сообщения для следующего шага
         }
       }
     }

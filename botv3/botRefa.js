@@ -1,12 +1,15 @@
 const BuyDomainsTelegramBot = require("./class/Bot.js");
+const StateRegistration = require("./class/StateRegistration.js");
 
 const bot = new BuyDomainsTelegramBot();
 
+// Commands
 bot.basicMethods.setMyCommands([
   { command: "start", description: "start" },
   { command: "build", description: "build" },
   { command: "zalypa", description: "joke generator" },
 ]);
+// Кнопки
 bot.basicMethods.hears("start", (context) => {
   context.reply("что делать с зп?", {
     reply_markup: bot.keyboardService.inlineKeyboard([
@@ -17,12 +20,9 @@ bot.basicMethods.hears("start", (context) => {
   });
 });
 
-
-
 bot.basicMethods.action("registration", (context) => {
-  bot.stateMap.set(context.chat_id, "waiting_first_name");
+  bot.registration.addState(context.message.chat.id);
   context.reply(`Введите ваше имя:`);
-
 });
 bot.basicMethods.action("settings", (context) => {
   context.reply(`Настройки`);
