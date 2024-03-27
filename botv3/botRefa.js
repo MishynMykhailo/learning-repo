@@ -1,5 +1,5 @@
 const BuyDomainsTelegramBot = require("./class/Bot.js");
-const StateRegistration = require("./class/StateRegistration.js");
+
 
 const bot = new BuyDomainsTelegramBot();
 

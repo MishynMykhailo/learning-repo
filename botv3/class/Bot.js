@@ -26,7 +26,7 @@ class Bot {
   async handleUpdate(updates) {
     for (const update of updates) {
       const { message, callback_query } = update;
-
+      console.log(update);
       // Для кнопок
       if (callback_query) {
         const { data, message } = callback_query;
@@ -52,12 +52,12 @@ class Bot {
           // Message я передаю как раз все сообщение, чтобы мог его использовать в методе как context
           await this.basicMethods.callbackHandlers[text](message);
         }
-        const currentState = this.registration.getIdState(message.chat.id);
-        if (currentState) {
-          // Если текущее состояние - "registration", то вызываем метод nextStep
-          this.registration.nextStep(message.chat.id, text);
-          // Здесь вы можете отправить нужные сообщения для следующего шага
-        }
+        // const currentState = this.registration.getIdState(message.chat.id);
+        // if (currentState) {
+        //   // Если текущее состояние - "registration", то вызываем метод nextStep
+        //   this.registration.nextStep(message.chat.id, text);
+        //   // Здесь вы можете отправить нужные сообщения для следующего шага
+        // }
       }
     }
   }
