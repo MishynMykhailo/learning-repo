@@ -6,6 +6,9 @@ import usersRouter from "./routes/users";
 import dateRouter from "./routes/date";
 import helloRouter from "./routes/hello";
 import todoRouter from "./routes/todo";
+import { logger } from "./utils/logger";
+import { rateLimit } from "./utils/rateLimit";
+// import { checkApiKey } from "./utils/checkApiKey";
 
 const app = express();
 const port = process.env.PORT || 3006;
@@ -13,6 +16,11 @@ const port = process.env.PORT || 3006;
 // Middleware для парсинга JSON и URL-encoded данных
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// логирование всех запросов
+app.use(logger);
+// Добавление rate-limit
+app.use(rateLimit);
+// app.use(checkApiKey);
 // Статические файлы
 const PUBLIC_DIR = path.resolve(__dirname, "../public");
 
