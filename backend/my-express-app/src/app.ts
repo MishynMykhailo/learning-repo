@@ -6,8 +6,10 @@ import usersRouter from "./routes/users";
 import dateRouter from "./routes/date";
 import helloRouter from "./routes/hello";
 import todoRouter from "./routes/todo";
+import filesRouter from "./routes/files";
 import { logger } from "./utils/logger";
 import { rateLimit } from "./utils/rateLimit";
+
 // import { checkApiKey } from "./utils/checkApiKey";
 
 const app = express();
@@ -34,7 +36,8 @@ app.use("/users", usersRouter);
 app.use("/date", dateRouter);
 app.use("/hello", helloRouter);
 app.use("/api/", todoRouter);
-
+app.use("/api/files", filesRouter);
+app.use("/api/blog", blogRouter);
 // Обработка ошибок
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).send("404 Not Found");
