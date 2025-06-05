@@ -19,12 +19,19 @@ export async function database() {
 
     // Возврат простого интерфейса
     return {
-      async read(): Promise<any[]> {
+      async read(opts?: { offset?: number; limit?: number }): Promise<any[]> {
         const raw = await fs.readFile(DB_PATH, "utf-8");
-        return JSON.parse(raw);
+        const data = JSON.parse(raw);
+        const { offset = 0, limit = data.length } = opts || {};
+        return data.slice(offset, offset + limit);
       },
       async write(data: any[]): Promise<void> {
         await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2), "utf-8");
+      },
+      async count(): Promise<number> {
+        const raw = await fs.readFile(DB_PATH, "utf-8");
+        const data = JSON.parse(raw);
+        return Array.isArray(data) ? data.length : 0;
       },
       path: DB_PATH,
     };

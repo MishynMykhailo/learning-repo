@@ -2,6 +2,8 @@ import express, { Request, Response, NextFunction } from "express";
 import path from "path";
 import { logger } from "./utils/logger";
 import postsRouter from "./routes/posts";
+import { AppError } from "./utils/AppError";
+import { errorHandler } from "./middleware/errorHandler";
 
 function createApp() {
   const app = express();
@@ -21,15 +23,17 @@ function createApp() {
   app.use("/api/posts", postsRouter);
 
   // Мидл вара если не найден запрос
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.status(404).send("404 Not Found");
+  app.use((req, res, next) => {
+    next(
+      new AppError({
+        message: `Cannot ${req.method} ${req.originalUrl}`,
+        statusCode: 404,
+      })
+    );
   });
 
   // Мидлвара для ошибки
-  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err.stack);
-    res.status(500).send("Что-то пошло не так!");
-  });
+  app.use(errorHandler);
   return app;
 }
 
