@@ -10,7 +10,7 @@ export async function deletePost(
   const { id } = req.params;
 
   try {
-    const db = req.app.locals.db;
+    const db = req.app.locals.db.dbPost;
     const posts = await db.read();
 
     const existingPost = posts.find((post: Post) => post.id === id);

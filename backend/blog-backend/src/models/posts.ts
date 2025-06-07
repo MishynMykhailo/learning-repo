@@ -6,11 +6,3 @@ export const postsAddSchema = Joi.object({
   content: Joi.string().min(2).required(),
   author: Joi.string().required(),
 }).options({ stripUnknown: true });
-
-// Joi schema - comments
-const commentAddSchema = Joi.object({
-  postId: Joi.string().uuid().required,
-  author: Joi.string().required(),
-  text: Joi.string().min(2).required(),
-  createAt: Joi.string(),
-});

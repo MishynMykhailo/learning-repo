@@ -9,7 +9,7 @@ export async function addPosts(
   next: NextFunction
 ) {
   try {
-    const db = req.app.locals.db;
+    const db = req.app.locals.db.dbPost;
     const { error, value } = postsAddSchema.validate(req.body);
 
     if (error) {
@@ -22,7 +22,6 @@ export async function addPosts(
       ...value,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      comments: [],
     };
     const posts = await db.read();
     await posts.push(newPost);

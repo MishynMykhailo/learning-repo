@@ -11,7 +11,7 @@ export async function listPosts(
   res: Response,
   next: NextFunction
 ) {
-  const db = req.app.locals.db;
+  const db = req.app.locals.db.dbPost;
   const { page, limit, offset } = parsePagination(req.query);
 
   try {

@@ -9,7 +9,7 @@ export async function getPostById(
 ) {
   const { id } = req.params;
   try {
-    const db = req.app.locals.db;
+    const db = req.app.locals.db.dbPost;
     const posts = await db.read();
     const post = posts.find((p: Post) => p.id === id);
     if (!post) {

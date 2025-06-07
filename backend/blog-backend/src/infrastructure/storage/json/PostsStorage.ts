@@ -9,15 +9,17 @@ export class PostsStorage extends Storage<Post> {
   constructor(
     private readonly dbFolder: string = path.join(
       __dirname,
-      "../../../storage"
+      "../../../../storage"
     ),
     private readonly dbFile: string
   ) {
     super();
     this.dbPath = path.join(this.dbFolder, this.dbFile);
+    this.init();
   }
 
   async init(): Promise<void> {
+    console.log("hi");
     await fs.mkdir(this.dbFolder, { recursive: true });
     try {
       await fs.access(this.dbPath);

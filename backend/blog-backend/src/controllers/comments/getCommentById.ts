@@ -1,17 +1,19 @@
 import express, { Request, Response, NextFunction } from "express";
 import { AppError } from "../../utils/AppError";
-import { Post } from "../interfaces/posts";
+import { Comment } from "../interfaces/comment";
 // router.get("/:id/comments", listComments);
-export async function listComments(
+export async function getCommentById(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   const params = req.params;
-  const db = req.app.locals.db;
+  const dbComment = req.app.locals.db.dbComment;
   try {
-    const posts = await db.read();
-    const existingPost = posts.find((post: Post) => post.id === params.id);
+    const comments = await dbComment.read();
+    const existingPost = comments.filter(
+      (comment: Comment) => comment.postId === params.id
+    );
     if (!existingPost) {
       next(
         new AppError({
@@ -23,7 +25,7 @@ export async function listComments(
     }
     res.status(200).json({
       message: `Comments for post with id: ${params.id} founded`,
-      data: existingPost.comments,
+      data: existingPost,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
